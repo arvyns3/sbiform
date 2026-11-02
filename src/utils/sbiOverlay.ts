@@ -167,9 +167,9 @@ export function drawApplicantNameSequence(
 
   let currentBox = 0;
   const ROW1_START_X = 104.4;
-  const ROW1_Y = 606.8;
+  const ROW1_Y = 606.5;
   const ROW2_START_X = 104.4;
-  const ROW2_Y = 589.8;
+  const ROW2_Y = 589.1;
   const STEP_X = 12.92;
   const MAX_ROW1_BOXES = 36;
   const MAX_TOTAL_BOXES = 72;
@@ -199,9 +199,13 @@ export function drawApplicantNameSequence(
       currentBox++;
     }
 
-    // Leave exactly ONE blank box between tokens
+    // Leave 2 blank boxes after salutation, and 1 blank box between subsequent name parts
     if (t < tokens.length - 1) {
-      currentBox++;
+      if (t === 0 && cleanSal) {
+        currentBox += 2;
+      } else {
+        currentBox += 1;
+      }
     }
   }
 }
@@ -325,19 +329,19 @@ export async function applySbiOverlay(
     // Branch Code: 5 boxes starting at 365.5, step 12.80, baseline 716.2
     drawLetterBoxes(p1, formData.branchCode, 365.5, 716.2, 12.80, font, 8.5, color, 5);
 
-    // Customer ID: 16 boxes starting at 104.4, step 12.76, baseline 682.2
-    drawLetterBoxes(p1, formData.customerId, 104.4, 682.2, 12.76, font, 8.5, color, 16);
+    // Customer ID: 16 boxes starting at 104.4, step 12.76, baseline 682.0
+    drawLetterBoxes(p1, formData.customerId, 104.4, 682.0, 12.76, font, 8.5, color, 16);
 
     // Application Type checkboxes:
     // New: box at 366.9, Update: box at 400.4, y=678.6
     drawCheckmark(p1, 366.9, 678.6, formData.applicationType === 'new', color);
     drawCheckmark(p1, 400.4, 678.6, formData.applicationType === 'update', color);
 
-    // Account No.: 16 boxes starting at 104.4, step 12.76, baseline 665.2
-    drawLetterBoxes(p1, formData.accountNumber, 104.4, 665.2, 12.76, font, 8.5, color, 16);
+    // Account No.: 16 boxes starting at 104.4, step 12.76, baseline 665.6
+    drawLetterBoxes(p1, formData.accountNumber, 104.4, 665.6, 12.76, font, 8.5, color, 16);
 
-    // CKYC No.: 16 boxes starting at 365.5, step 12.76, baseline 665.2
-    drawLetterBoxes(p1, formData.ckycNumber, 365.5, 665.2, 12.76, font, 8.5, color, 16);
+    // CKYC No.: 16 boxes starting at 365.5, step 12.76, baseline 665.6
+    drawLetterBoxes(p1, formData.ckycNumber, 365.5, 665.6, 12.76, font, 8.5, color, 16);
 
     // Account Type checkboxes:
     // Normal (104.4, y=639.2), Small (150.1, y=639.2), Minor (195.7, y=639.2), Staff (365.5, y=638.0)
@@ -351,7 +355,7 @@ export async function applySbiOverlay(
     }
 
     // Section A. Personal Details
-    // 1. Full Name: Salutation, leaving 1 box, First Name, leaving 1 box, Middle Name, leaving 1 box, Last Name
+    // 1. Full Name: Salutation, leaving 2 boxes, First Name, leaving 1 box, Middle Name, leaving 1 box, Last Name
     drawApplicantNameSequence(
       p1,
       formData.salutation,
@@ -363,8 +367,8 @@ export async function applySbiOverlay(
       color
     );
 
-    // 2. Date of Birth: 8 boxes starting at 104.4, step 12.88, baseline 573.0
-    drawDateBoxes(p1, formData.dob, 104.4, 573.0, 12.88, font, 8.5, color);
+    // 2. Date of Birth: 8 boxes starting at 104.4, step 12.88, baseline 572.0
+    drawDateBoxes(p1, formData.dob, 104.4, 572.0, 12.88, font, 8.5, color);
 
     // 3. Gender checkboxes (y = 568.6):
     // Male (259.4), Female (298.2), Third Gender (349.9)
@@ -389,13 +393,13 @@ export async function applySbiOverlay(
     drawCheckmark(p1, 143.3, 535.9, formData.relativeType === 'mother', color);
     drawCheckmark(p1, 183.8, 535.9, formData.relativeType === 'spouse', color);
 
-    // Relative Name Boxes (Line 6, baseline 523.8):
+    // Relative Name Boxes (Line 6, baseline 524.7):
     // First Name: 10 boxes starting at 104.4, step 12.90
-    drawLetterBoxes(p1, formData.relativeFirstName, 104.4, 523.8, 12.90, font, 8.0, color, 10);
+    drawLetterBoxes(p1, formData.relativeFirstName, 104.4, 524.7, 12.90, font, 8.0, color, 10);
     // Middle Name: 11 boxes starting at 246.5, step 12.90
-    drawLetterBoxes(p1, formData.relativeMiddleName, 246.5, 523.8, 12.90, font, 8.0, color, 11);
-    // Last Name: 13 boxes starting at 401.5, step 12.90
-    drawLetterBoxes(p1, formData.relativeLastName, 401.5, 523.8, 12.90, font, 8.0, color, 13);
+    drawLetterBoxes(p1, formData.relativeMiddleName, 246.5, 524.7, 12.90, font, 8.0, color, 11);
+    // Last Name: 13 boxes starting at 401.7, step 12.90
+    drawLetterBoxes(p1, formData.relativeLastName, 401.7, 524.7, 12.90, font, 8.0, color, 13);
 
     // 8. Nationality checkboxes (y = 453.4):
     // In-Indian (104.4), Others (156.1)
@@ -492,11 +496,11 @@ export async function applySbiOverlay(
     drawLetterBoxes(p1, formData.pan, 104.4, 79.6, 12.92, font, 8.5, color, 10);
 
     // Section B. Contact Details:
-    // Mobile No.: 10 boxes starting at 104.4, step 12.88, baseline 49.6
-    drawLetterBoxes(p1, formData.mobileNumber, 104.4, 49.6, 12.88, font, 8.5, color, 10);
+    // Mobile No.: 10 boxes starting at 104.4, step 12.88, baseline 48.8
+    drawLetterBoxes(p1, formData.mobileNumber, 104.4, 48.8, 12.88, font, 8.5, color, 10);
 
-    // Email ID: text starting at 320.0, y=49.6
-    drawTextLine(p1, formData.emailId.toLowerCase(), 320.0, 49.6, font, 7.5, color, 240);
+    // Email ID: text starting at 320.0, y=48.8
+    drawTextLine(p1, formData.emailId.toLowerCase(), 320.0, 48.8, font, 7.5, color, 240);
 
     // Mobile belongs to checkboxes (y = 28.7):
     // Self (104.4), Father (142.9), Mother (187.4), Son (235.5), Daughter (274.6), Spouse (328.6)
@@ -915,6 +919,50 @@ export async function applySbiOverlay(
       drawTextLine(p7, formData.foreignTaxResidence, 88.0, 260.0, font, 7.5, color, 75);
       drawTextLine(p7, formData.foreignTin || 'N/A', 175.0, 260.0, font, 7.5, color, 180);
       drawTextLine(p7, formData.foreignTaxResidence, 368.0, 260.0, font, 7.5, color, 140);
+    }
+
+    // FATCA / CRS Address Section (Page 7 bottom):
+    // Address Row 1: 38 individual boxes starting at 82.75, step 12.76, baseline 191.6
+    if (formData.addressLine1) {
+      drawLetterBoxes(p7, formData.addressLine1, 82.75, 191.6, 12.76, font, 7.5, color, 38);
+    }
+    // Address Row 2: 38 individual boxes starting at 82.75, step 12.76, baseline 175.9
+    if (formData.addressLine2) {
+      drawLetterBoxes(p7, formData.addressLine2, 82.75, 175.9, 12.76, font, 7.5, color, 38);
+    }
+
+    // City / Village*: 14 boxes starting at 82.5, step 12.76, baseline 161.4
+    if (formData.cityVillage) {
+      drawLetterBoxes(p7, formData.cityVillage, 82.5, 161.4, 12.76, font, 7.5, color, 14);
+    }
+
+    // State*: 14 boxes starting at 312.1, step 12.76, baseline 161.4
+    if (formData.state) {
+      drawLetterBoxes(p7, formData.state, 312.1, 161.4, 12.76, font, 7.5, color, 14);
+    }
+
+    // Country Name*: 14 boxes starting at 82.5, step 12.76, baseline 146.6
+    drawLetterBoxes(p7, formData.country || formData.countryName || 'INDIA', 82.5, 146.6, 12.76, font, 7.5, color, 14);
+
+    // ZIP / Post Code*: 14 boxes starting at 312.1, step 12.76, baseline 146.6
+    if (formData.pincode) {
+      drawLetterBoxes(p7, formData.pincode, 312.1, 146.6, 12.76, font, 8.0, color, 14);
+    }
+
+    // Place & Date
+    if (formData.place) {
+      drawTextLine(p7, formData.place, 68.0, 129.0, font, 7.5, color, 120);
+    }
+    drawTextLine(p7, formData.signatureDate || formData.applicationDate, 68.0, 114.0, font, 7.5, color, 120);
+
+    // Signature Box: x=312.1..490.7, y=101.8..134.5
+    if (sigImg) {
+      p7.drawImage(sigImg, {
+        x: 325.0,
+        y: 104.0,
+        width: 150.0,
+        height: 28.0,
+      });
     }
   }
 }

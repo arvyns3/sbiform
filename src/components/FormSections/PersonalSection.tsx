@@ -431,6 +431,32 @@ export const PersonalSection: React.FC<Props> = ({ formData, onChange }) => {
             className="w-full px-2.5 py-1.5 text-xs uppercase bg-white border border-slate-300 rounded focus:border-indigo-500 focus:outline-hidden"
           />
         </div>
+
+        <div className="sm:col-span-2">
+          <label className="block text-xs font-semibold text-slate-700 mb-1">
+            Nature of Business
+          </label>
+          <input
+            type="text"
+            value={formData.natureOfBusiness}
+            onChange={(e) => onChange('natureOfBusiness', e.target.value.toUpperCase())}
+            placeholder="e.g. OTHERS"
+            className="w-full px-2.5 py-1.5 text-xs uppercase bg-white border border-slate-300 rounded focus:border-indigo-500 focus:outline-hidden"
+          />
+        </div>
+
+        <div>
+          <label className="block text-xs font-semibold text-slate-700 mb-1">
+            13. Net Worth (Rs.)
+          </label>
+          <input
+            type="text"
+            value={formData.netWorth}
+            onChange={(e) => onChange('netWorth', e.target.value.replace(/\D/g, ''))}
+            placeholder="e.g. 1000000"
+            className="w-full px-2.5 py-1.5 text-xs font-mono bg-white border border-slate-300 rounded focus:border-indigo-500 focus:outline-hidden"
+          />
+        </div>
       </div>
 
       {/* Religion, Category, Source of Funds */}
